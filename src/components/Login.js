@@ -14,7 +14,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:4000/api/login', formData);
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/login`, formData);
       localStorage.setItem('token', data.token);
       alert('Login successful!');
       window.location.href = '/';

@@ -24,7 +24,7 @@ const Register = () => {
       return;
     }
     try {
-      await axios.post('http://localhost:4000/api/register', formData);
+      await axios.post(`${process.env.REACT_APP_API_URL}/register`, formData);
       alert('Registration successful!');
       window.location.href = '/login';
     } catch (error) {

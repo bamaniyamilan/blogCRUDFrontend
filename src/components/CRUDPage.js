@@ -13,6 +13,7 @@ const CRUDPage = () => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
     if (!token) {
@@ -25,10 +26,9 @@ const CRUDPage = () => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/user', {
+      const response = await axios.get(`${apiBaseUrl}/user`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log('User data:', response.data); // Debugging line
       setUser(response.data);
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -37,7 +37,7 @@ const CRUDPage = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/posts', {
+      const response = await axios.get(`${apiBaseUrl}/posts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPosts(response.data);
@@ -53,7 +53,7 @@ const CRUDPage = () => {
     }
     try {
       const response = await axios.post(
-        'http://localhost:4000/api/posts',
+        `${apiBaseUrl}/posts`,
         { title, description },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -72,7 +72,7 @@ const CRUDPage = () => {
     }
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/posts/${editingPost._id}`,
+        `${apiBaseUrl}/posts/${editingPost._id}`,
         { title, description },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -88,9 +88,9 @@ const CRUDPage = () => {
     }
   };
 
-  const handleDeletePost = async id => {
+  const handleDeletePost = async (id) => {
     try {
-      await axios.delete(`http://localhost:4000/api/posts/${id}`, {
+      await axios.delete(`${apiBaseUrl}/posts/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPosts(prevPosts => prevPosts.filter(post => post._id !== id));
@@ -98,7 +98,6 @@ const CRUDPage = () => {
       console.error('Error deleting post:', error);
     }
   };
-
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
